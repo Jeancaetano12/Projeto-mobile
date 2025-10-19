@@ -1,14 +1,15 @@
-// Novo código com NativeWind
 import { StatusBar } from 'expo-status-bar';
-import { Text, View } from 'react-native';
+// 1. Precisamos importar o NavigationContainer
+import { NavigationContainer } from '@react-navigation/native';
+
+import { AppRoutes } from './navigation/AppRoutes';
 
 export default function App() {
   return (
-    <View className="flex-1 items-center justify-center bg-white">
-      
-      <Text className="text-red-700 text-2xl font-bold">Meu App com NativeWind!</Text>
-      
-      <StatusBar style="light" />
-    </View>
+    // 2. Envolvemos todo o nosso sistema de rotas com o NavigationContainer
+    <NavigationContainer>
+      <AppRoutes />
+      <StatusBar style="auto" />
+    </NavigationContainer>
   );
 }
