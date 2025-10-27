@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity, Image } from 'react-native';
+import Ionicons from '@expo/vector-icons/Ionicons';
 
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
@@ -49,6 +50,7 @@ export function SignUpScreen({ navigation }: any) {
       <ButtonDefault
         title="Cadastrar"
         onPress={handleSignUp}
+        icon={<Ionicons className="ml-2" name="enter" size={26} color="white"/>}
       />
 
       {/* Botão para voltar para a tela de Login */}
@@ -56,7 +58,7 @@ export function SignUpScreen({ navigation }: any) {
         className="mt-8"
         onPress={() => navigation.goBack()}
       >
-        <Text className="text-gray-600 font-semibold">
+        <Text className="text-gray-600 font-semibold underline">
           Já tenho uma conta
         </Text>
       </TouchableOpacity>

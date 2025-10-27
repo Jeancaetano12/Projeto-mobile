@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, TouchableOpacity,Image } from 'react-native';
+import Entypo from '@expo/vector-icons/Entypo';
 
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
@@ -45,13 +46,17 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
       <ButtonDefault
         title="Entrar"
         onPress={handleSignIn}
+        icon={<Entypo className="ml-2" name="login" size={24} color="#FFFFFF" />}
       />
       <TouchableOpacity
         className="mt-8"
         onPress={() => navigation.navigate('SignUp')} // Agora o TypeScript sabe que 'SignUp' é uma rota válida!
       >
-        <Text className="text-gray-600 font-semibold">
-          Não tem uma conta? Clique aqui.
+        <Text className="text-gray-600 font-semibold ">
+          Não tem uma conta?{" "}
+          <Text className="underline ">
+            Clique aqui
+          </Text>
         </Text>
       </TouchableOpacity>
     </View>
