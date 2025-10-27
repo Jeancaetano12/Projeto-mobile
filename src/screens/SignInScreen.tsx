@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity,Image } from 'react-native';
+import { View, Text, TouchableOpacity,Image, Alert } from 'react-native';
 import Entypo from '@expo/vector-icons/Entypo';
-
+import { useAuth } from '../contexts/AuthContext';
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
 
@@ -11,10 +11,17 @@ import { AuthScreenProps } from '../@types/navigation';
 // Substituímos o 'any' pelo tipo correto para a tela 'SignIn'
 export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
+  const { signIn } = useAuth();
 
-  function handleSignIn() {
-    console.log({ email, password });
+  async function handleSignIn() {
+    try {
+      console.log('Botão entrar pressionado');
+      await signIn(email, senha);
+    } catch (error) {
+      Alert.alert('Erro', 'Falha ao entrar. Verifique suas credenciais.');
+      console.log('Erro ao entrar:', error);
+    }
   }
 
   return (
@@ -40,7 +47,7 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
       <InputDefault
         placeholder="Senha"
         secureTextEntry
-        onChangeText={setPassword}
+        onChangeText={setSenha}
         className="mb-8"
       />
       <ButtonDefault

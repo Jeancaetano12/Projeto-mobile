@@ -1,15 +1,15 @@
 import { StatusBar } from 'expo-status-bar';
-// 1. Precisamos importar o NavigationContainer
 import { NavigationContainer } from '@react-navigation/native';
-
-import { AppRoutes } from './navigation/AppRoutes';
+import { AuthProvider } from './contexts/AuthContext';
+import { RootNavigator } from './navigation/index';
 
 export default function App() {
   return (
-    // 2. Envolvemos todo o nosso sistema de rotas com o NavigationContainer
-    <NavigationContainer>
-      <AppRoutes />
-      <StatusBar style="auto" />
-    </NavigationContainer>
+    <AuthProvider>
+      <NavigationContainer>
+        <RootNavigator />
+        <StatusBar style="auto" />
+      </NavigationContainer>
+    </AuthProvider>
   );
 }

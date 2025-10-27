@@ -1,19 +1,26 @@
 import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, Image } from 'react-native';
+import { View, Text, TouchableOpacity, Image, Alert } from 'react-native';
 import Ionicons from '@expo/vector-icons/Ionicons';
-
+import { useAuth } from '../contexts/AuthContext';
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
 
+
 // As telas que fazem parte de um navegador recebem uma propriedade 'navigation'
 export function SignUpScreen({ navigation }: any) {
-  const [name, setName] = useState('');
+  const [nomeCompleto, setName] = useState('');
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [senha, setSenha] = useState('');
+  const { signUp } = useAuth();
 
-  function handleSignUp() {
-    console.log({ name, email, password });
-    // Futuramente, aqui você salvaria o novo usuário no banco de dados
+  async function handleSignUp() {
+    try {
+      console.log('Botão cadastrar pressionado')
+      await signUp(nomeCompleto, email, senha);
+    } catch (error) {
+      Alert.alert('Erro', 'Falha ao entrar. Verifique suas credenciais.');
+      console.log('Erro ao cadastrar:', error);
+    }
   }
 
   return (
@@ -43,7 +50,7 @@ export function SignUpScreen({ navigation }: any) {
       <InputDefault
         placeholder="Senha"
         secureTextEntry
-        onChangeText={setPassword}
+        onChangeText={setSenha}
         className="mb-8"
       />
 
