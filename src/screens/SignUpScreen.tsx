@@ -4,6 +4,7 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import { useAuth } from '../contexts/AuthContext';
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
+import Toast from 'react-native-toast-message';
 
 
 // As telas que fazem parte de um navegador recebem uma propriedade 'navigation'
@@ -11,15 +12,40 @@ export function SignUpScreen({ navigation }: any) {
   const [nomeCompleto, setName] = useState('');
   const [email, setEmail] = useState('');
   const [senha, setSenha] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
   const { signUp } = useAuth();
 
   async function handleSignUp() {
+    if (!nomeCompleto || !email || !senha) {
+      return Toast.show({
+        type: 'info',
+        text1: 'Atenção',
+        text2: 'Preencha todos os campos.',
+        topOffset: 60,
+      });
+    }
+    setIsLoading(true);
     try {
       console.log('Botão cadastrar pressionado')
       await signUp(nomeCompleto, email, senha);
+
+      Toast.show({
+        type: 'success',
+        text1: 'Cadastro realizado',
+        text2: 'Bem vindo, {}!'.replace('{}', nomeCompleto),
+        topOffset: 80,
+      });
+
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao entrar. Verifique suas credenciais.');
-      console.log('Erro ao cadastrar:', error);
+      console.error(error)
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao cadastrar',
+        text2: 'Ocorreu um erro ao criar sua conta. Tente novamente.',
+        topOffset: 60,
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 

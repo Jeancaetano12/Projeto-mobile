@@ -4,6 +4,7 @@ import Entypo from '@expo/vector-icons/Entypo';
 import { useAuth } from '../contexts/AuthContext';
 import { InputDefault } from '../components/InputDefault';
 import { ButtonDefault } from '../components/ButtonDefault';
+import Toast from 'react-native-toast-message';
 
 // Importando nosso tipo de propriedade de tela
 import { AuthScreenProps } from '../@types/navigation';
@@ -14,13 +15,37 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
   const [senha, setSenha] = useState('');
   const { signIn } = useAuth();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   async function handleSignIn() {
+    if (!email || !senha) {
+      return Toast.show({
+        type: 'info',
+        text1: 'Atenção',
+        text2: 'Preencha todos os campos.',
+        topOffset: 80,
+      });
+    }
+    setIsLoading(true);
     try {
-      console.log('Botão entrar pressionado');
       await signIn(email, senha);
+      Toast.show({
+        type: 'success',
+        text1: 'Login realizado',
+        text2: 'Bem-vindo de volta!',
+        topOffset: 80,
+      });
+
     } catch (error) {
-      Alert.alert('Erro', 'Falha ao entrar. Verifique suas credenciais.');
-      console.log('Erro ao entrar:', error);
+      console.error(error)
+      Toast.show({
+        type: 'error',
+        text1: 'Erro ao entrar',
+        text2: 'Verifique suas credenciais e tente novamente.',
+        topOffset: 80,
+      });
+    } finally {
+      setIsLoading(false);
     }
   }
 
@@ -51,7 +76,7 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
         className="mb-8"
       />
       <ButtonDefault
-        title="Entrar"
+        title={isLoading ? 'Entrando...' : 'Entrar'}
         onPress={handleSignIn}
         icon={<Entypo className="ml-2" name="login" size={24} color="#FFFFFF" />}
       />
