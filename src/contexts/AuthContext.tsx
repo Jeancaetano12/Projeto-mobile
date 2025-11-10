@@ -61,7 +61,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn(email: string, senha: string) {
     try {
       console.log('Tentando fazer login com:', { email });
-      const response = await api.post('/auth/login', { email });
+      const response = await api.post('/auth/login', { email, senha });
       
       const { access_token } = response.data;
 
@@ -92,7 +92,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signUp(nomeCompleto: string, email: string, senha: string) {
     try {
       console.log('Tentando cadastrar com:', { nomeCompleto, email });
-      const response = await api.post('/auth/register', { nomeCompleto, email });
+      const response = await api.post('/auth/register', { nomeCompleto, email, senha });
       console.log('Resposta do cadastro', response.data);
 
       // 2. (Opcional) Fazer o login automaticamente após o cadastro
