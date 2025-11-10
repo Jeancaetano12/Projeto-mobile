@@ -1,6 +1,7 @@
 import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 import * as SecureStore from 'expo-secure-store';
 import api from '../services/api';
+import Toast from 'react-native-toast-message';
 
 interface User {
   id: string;
@@ -46,7 +47,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           setUser(userData);
 
         } catch (error) {
-          console.error('[AuthContext] Token inválido ou erro ao buscar perfil:', error);
+          console.log('[AuthContext] Token inválido ou erro ao buscar perfil:', error);
           await signOut();
         }
       } else {
@@ -61,7 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signIn(email: string, senha: string) {
     try {
       console.log('Tentando fazer login com:', { email });
-      const response = await api.post('/auth/login', { email });
+      const response = await api.post('/auth/login', { email, senha });
       
       const { access_token } = response.data;
 
@@ -84,7 +85,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       setUser(userData);
 
     } catch (error) {
-      console.error('[signIn] Erro:', error);
+      console.log('[signIn] Erro:', error);
       throw new Error('Falha no login');
     }
   }
@@ -92,14 +93,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function signUp(nomeCompleto: string, email: string, senha: string) {
     try {
       console.log('Tentando cadastrar com:', { nomeCompleto, email });
-      const response = await api.post('/auth/register', { nomeCompleto, email });
+      const response = await api.post('/auth/register', { nomeCompleto, email, senha });
       console.log('Resposta do cadastro', response.data);
 
       // 2. (Opcional) Fazer o login automaticamente após o cadastro
       await signIn(email, senha);
 
     } catch (error) {
-      console.error(error);
+      console.log(error);
       throw new Error();
     }
   }
@@ -112,6 +113,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     api.defaults.headers.common['Authorization'] = undefined;
     setToken(null);
     setUser(null);
+
+    Toast.show ({
+      type: 'info',
+      text1: 'Desconectado',
+      text2: 'Até mais 👋'
+    })
   }
 
   return (

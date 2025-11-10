@@ -37,7 +37,7 @@ export function SignInScreen({ navigation }: AuthScreenProps<'SignIn'>) {
       });
 
     } catch (error) {
-      console.error(error)
+      console.log(error)
       Toast.show({
         type: 'error',
         text1: 'Erro ao entrar',

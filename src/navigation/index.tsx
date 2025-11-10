@@ -3,7 +3,7 @@ import { View, ActivityIndicator } from 'react-native';
 import { useAuth } from '../contexts/AuthContext';
 
 import { AuthRoutes } from './AuthRoutes'; // Telas de Login/Cadastro
-import { AppStack } from './AppStack';   // Telas do App (Home, etc.)
+import { AppDrawer} from './AppDrawer';   // Telas do App (Home, etc.)
 
 export function RootNavigator() {
   const { token, isLoading } = useAuth();
@@ -18,5 +18,5 @@ export function RootNavigator() {
   }
 
   // Se tiver token, mostre o App. Se não, mostre as rotas de Auth.
-  return token ? <AppStack /> : <AuthRoutes />;
+  return token ? <AppDrawer /> : <AuthRoutes />;
 }
